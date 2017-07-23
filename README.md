@@ -1,2 +1,1 @@
-# timpestampMicroservice
-Timpestamp Microservice - Freecodecamp API Project
+# Backend Challenges boilerplate - package.json
