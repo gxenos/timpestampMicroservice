@@ -7,6 +7,8 @@
 
 var fs = require('fs');
 var express = require('express');
+var moment = require('moment');
+
 var app = express();
 
 if (!process.env.DISABLE_XORIGIN) {
@@ -36,7 +38,28 @@ app.route('/_api/package.json')
 app.route('/')
     .get(function(req, res) {
 		  res.sendFile(process.cwd() + '/views/index.html');
-    })
+})
+
+app.get('/:date', function(req, res){
+  var input = req.params.date;
+  var date = null;
+  
+  if(!isNaN(input)){
+    date = moment.unix(input);
+  }else{
+    date = moment(input);
+  }
+  if(date.isValid()){
+    var unixDate = date.unix()
+    var naturalDate = date.format('MMMM Do YYYY');
+  }else{
+    var unixDate = null;
+    var naturalDate = null;
+  }
+  res.end(JSON.stringify({"unix" : unixDate, "natural": naturalDate}));
+});
+
+
 
 // Respond not found to all the wrong routes
 app.use(function(req, res, next){
